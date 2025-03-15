@@ -1,0 +1,42 @@
+﻿@model FarSis.Models.Document
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Document</h4>
+<hr />
+<div class="row">
+    <div class="col-md-10">
+        <!-- Increased width to 80% -->
+        <form asp-action="Create" method="post">
+            <div class="form-group">
+                <label for="DocumentText">Document Text</label>
+                <textarea asp-for="DocumentText" id="editor" class="form-control" rows="10">
+                    @Html.Raw(Model?.DocumentText ?? "")
+                </textarea>
+            </div>
+
+            <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/ckeditor.js"></script>
+            <script>
+                ClassicEditor
+                    .create(document.querySelector('#editor'))
+                    .catch(error => {
+                        console.error(error);
+                    });
+            </script>
+
+            <button type="submit" class="btn btn-primary mt-3">Save</button>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}
