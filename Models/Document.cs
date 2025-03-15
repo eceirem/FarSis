@@ -2,14 +2,14 @@
 {
     public class Document
     {
-        public int Id { get; set; }
+        public string Id { get; set; } // Change this to string to match the type of ApplicationUser Id
 
-        public DateTime Label = DateTime.Now;
+        public String? Label = string.Empty; //header
         public String? DocumentText { get; set; }
-        public User User { get; set; } = new();
-        public Department Department { get; set; } = new();
+        public ApplicationUser User { get; set; } = new(); 
+        public string DepartmentId { get; set; }
 
-        public Boolean CheckedByEditor = false;
+        public bool CheckedByEditor = false;
         public int EditorId { get; set; }
     }
 }

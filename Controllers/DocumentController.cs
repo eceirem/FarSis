@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using FarSis.Data;
 using FarSis.Models;
 
@@ -13,34 +8,12 @@ namespace FarSis.Controllers
     public class DocumentController : Controller
     {
         private readonly FarSisContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public DocumentController(FarSisContext context)
+        public DocumentController(FarSisContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
-        }
-
-        // GET: Documents
-        public async Task<IActionResult> Index()
-        {
-            return View(await _context.Documents.ToListAsync());
-        }
-
-        // GET: Documents/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var document = await _context.Documents
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (document == null)
-            {
-                return NotFound();
-            }
-
-            return View(document);
+            _userManager = userManager;
         }
 
         // GET: Documents/Create
@@ -49,106 +22,30 @@ namespace FarSis.Controllers
             return View();
         }
 
+        // POST: Documents/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,DocumentText")] Document document)
+        public async Task<IActionResult> Create([Bind("Id, DocumentText")] Document document)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(document);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(document);
-        }
+                // Get the current logged-in user
+                var user = await _userManager.GetUserAsync(User);
 
-        // GET: Documents/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var document = await _context.Documents.FindAsync(id);
-            if (document == null)
-            {
-                return NotFound();
-            }
-            return View(document);
-        }
-
-        // POST: Documents/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,EditorId")] Document document)
-        {
-            if (id != document.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
+                if (user != null)
                 {
-                    _context.Update(document);
+                    // Set the document properties
+                    document.Id = user.Id; // Assign logged-in user's ID to the document
+                    document.DepartmentId = user.DepartmentId; // Assign department ID
+                    document.Label = DateTime.Now.ToString("yyyy-MM-dd");
+
+                    _context.Add(document);
                     await _context.SaveChangesAsync();
+
+                    return RedirectToAction("Index", "Home");
                 }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!DocumentExists(document.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
             }
             return View(document);
-        }
-
-        // GET: Documents/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var document = await _context.Documents
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (document == null)
-            {
-                return NotFound();
-            }
-
-            return View(document);
-        }
-
-        // POST: Documents/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var document = await _context.Documents.FindAsync(id);
-            if (document != null)
-            {
-                _context.Documents.Remove(document);
-            }
-
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool DocumentExists(int id)
-        {
-            return _context.Documents.Any(e => e.Id == id);
         }
     }
 }

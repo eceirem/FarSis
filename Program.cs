@@ -1,20 +1,55 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using FarSis.Data;
+using FarSis.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// 🔹 Configure the database connection
+// Register the DbContext and Identity services
 builder.Services.AddDbContext<FarSisContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("FarSisContext")
     ?? throw new InvalidOperationException("Connection string 'FarSisContext' not found.")));
 
-// 🔹 Add MVC controllers with views
+// Add Identity services
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+    .AddEntityFrameworkStores<FarSisContext>()
+    .AddDefaultTokenProviders();
+
+// Add controllers and views
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
-// 🔹 Configure the HTTP request pipeline
+// Apply migrations to the database at startup and seed the database (only in development)
+if (app.Environment.IsDevelopment())
+{
+    using (var scope = app.Services.CreateScope())
+    {
+        var services = scope.ServiceProvider;
+        var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+        var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+        var context = services.GetRequiredService<FarSisContext>();
+        var logger = services.GetRequiredService<ILogger<SeedData>>();
+
+        try
+        {
+            // Apply any pending migrations
+            await context.Database.MigrateAsync();
+            logger.LogInformation("Database migrations applied successfully.");
+
+            // Call the SeedData method to seed the database
+            await SeedData.Initialize(services, userManager, roleManager, logger);
+            logger.LogInformation("Database seeding completed successfully.");
+        }
+        catch (Exception ex)
+        {
+            // Log any errors that occur during migration or seeding
+            logger.LogError(ex, "An error occurred while applying migrations or seeding the database.");
+        }
+    }
+}
+
+// Configure the HTTP request pipeline
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
@@ -26,7 +61,6 @@ app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthorization();
 
-// 🔹 Updated routing approach (replaces UseEndpoints)
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
