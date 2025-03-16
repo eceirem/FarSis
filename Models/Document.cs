@@ -2,21 +2,15 @@
 {
     public class Document
     {
-        public int Id { get; set; }
+        public string Id { get; set; } // Change this to string to match the type of ApplicationUser Id
 
-        // Use DateTime for Label
-        public DateTime Label { get; private set; }
+        public DateTime Label { get; set; }
+        public String? DocumentText { get; set; }
+        public ApplicationUser? User { get; set; } = new();
+        public Department Department { get; set; } = new();
+        public string? DepartmentId { get; set; }
 
-        public string? DocumentText { get; set; }
-        public User? User { get; set; }
-
-        // DepartmentId to store the selected department's ID
-        public int? DepartmentId { get; set; }
-
-        // Navigation property for Department
-        public Department? Department { get; set; }
-
-        public bool CheckedByEditor { get; set; } = false;
+        public bool CheckedByEditor = false;
         public int EditorId { get; set; }
 
         // Constructor to initialize the Label with the current timestamp
