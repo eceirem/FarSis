@@ -8,9 +8,9 @@ namespace FarSis.Controllers
     public class DocumentController : Controller
     {
         private readonly FarSisContext _context;
-        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly UserManager<User> _userManager;
 
-        public DocumentController(FarSisContext context, UserManager<ApplicationUser> userManager)
+        public DocumentController(FarSisContext context, UserManager<User> userManager)
         {
             _context = context;
             _userManager = userManager;

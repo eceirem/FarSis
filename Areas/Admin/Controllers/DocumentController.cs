@@ -31,7 +31,7 @@ namespace FarSis.Areas.Admin.Controllers
             if (departmentId.HasValue)
             {
                 // Filter documents by the selected department
-                documentsQuery = documentsQuery.Where(d => d.DepartmentId == departmentId.Value.ToString());
+                documentsQuery = documentsQuery.Where(d => d.DepartmentId == departmentId.Value);
             }
 
             var documents = await documentsQuery.ToListAsync();
@@ -153,7 +153,7 @@ namespace FarSis.Areas.Admin.Controllers
             var document = await _context.Documents
                 .Include(d => d.User)       // Include related User data
                 .Include(d => d.Department) // Include related Department data
-                .FirstOrDefaultAsync(m => int.Parse(m.Id) == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
 
             if (document == null)
             {

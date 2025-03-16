@@ -4,7 +4,7 @@ using FarSis.Models;
 
 namespace FarSis.Data
 {
-    public class FarSisContext : IdentityDbContext<ApplicationUser>  // IdentityDbContext handles user management
+    public class FarSisContext : IdentityDbContext<User>  // IdentityDbContext handles user management
     {
         public FarSisContext(DbContextOptions<FarSisContext> options)
             : base(options)

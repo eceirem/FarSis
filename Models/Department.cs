@@ -2,7 +2,7 @@
 {
     public class Department
     {
-        public string Id { get; set; }
+        public int Id { get; set; }
 
         // Ensure Name is required (if necessary) and prevent null issues
         public string Name { get; set; } = string.Empty;        

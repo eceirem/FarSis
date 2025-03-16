@@ -11,7 +11,7 @@ builder.Services.AddDbContext<FarSisContext>(options =>
     ?? throw new InvalidOperationException("Connection string 'FarSisContext' not found.")));
 
 // Add Identity services
-builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+builder.Services.AddIdentity<User, IdentityRole>()
     .AddEntityFrameworkStores<FarSisContext>()
     .AddDefaultTokenProviders();
 
@@ -26,7 +26,7 @@ if (app.Environment.IsDevelopment())
     using (var scope = app.Services.CreateScope())
     {
         var services = scope.ServiceProvider;
-        var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+        var userManager = services.GetRequiredService<UserManager<User>>();
         var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
         var context = services.GetRequiredService<FarSisContext>();
         var logger = services.GetRequiredService<ILogger<SeedData>>();

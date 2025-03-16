@@ -2,13 +2,13 @@
 {
     public class Document
     {
-        public string Id { get; set; } // Change this to string to match the type of ApplicationUser Id
+        public int Id { get; set; } // Change this to string to match the type of ApplicationUser Id
 
         public DateTime Label { get; set; }
         public String? DocumentText { get; set; }
-        public ApplicationUser? User { get; set; } = new();
-        public Department Department { get; set; } = new();
-        public string? DepartmentId { get; set; }
+        public User? User { get; set; }
+        public Department? Department { get; set; }
+        public int? DepartmentId { get; set; }
 
         public bool CheckedByEditor = false;
         public int EditorId { get; set; }

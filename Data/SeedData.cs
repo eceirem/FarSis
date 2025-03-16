@@ -9,7 +9,7 @@ namespace FarSis.Data
 {
     public class SeedData
     {
-        public static async Task Initialize(IServiceProvider serviceProvider, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, ILogger<SeedData> logger)
+        public static async Task Initialize(IServiceProvider serviceProvider, UserManager<User> userManager, RoleManager<IdentityRole> roleManager, ILogger<SeedData> logger)
         {
             var context = serviceProvider.GetRequiredService<FarSisContext>();
 
@@ -19,17 +19,17 @@ namespace FarSis.Data
                 if (!context.Departments.Any())
                 {
                     context.Departments.AddRange(
-                        new Department { Name = "İdari İşler", Id = "1" },
-                        new Department { Name = "Teknik Destek", Id = "2" },
-                        new Department { Name = "Kullanıcı Destek", Id = "3" },
-                        new Department { Name = "Mali İşler", Id = "4" },
-                        new Department { Name = "Bilgi Güvenliği", Id = "5" },
-                        new Department { Name = "Web Yazılım", Id = "6" },
-                        new Department { Name = "Yazılım", Id = "7" },
-                        new Department { Name = "Sistem", Id = "8" },
-                        new Department { Name = "Ağ", Id = "9" },
-                        new Department { Name = "Başkan", Id = "10" },
-                        new Department { Name = "Editör", Id = "11" }
+                        new Department { Name = "İdari İşler", Id = 1 },
+                        new Department { Name = "Teknik Destek", Id = 2 },
+                        new Department { Name = "Kullanıcı Destek", Id = 3 },
+                        new Department { Name = "Mali İşler", Id = 4 },
+                        new Department { Name = "Bilgi Güvenliği", Id = 5 },
+                        new Department { Name = "Web Yazılım", Id = 6 },
+                        new Department { Name = "Yazılım", Id = 7 },
+                        new Department { Name = "Sistem", Id = 8 },
+                        new Department { Name = "Ağ", Id = 9 },
+                        new Department { Name = "Başkan", Id = 10 },
+                        new Department { Name = "Editör", Id = 11 }
                     );
                     await context.SaveChangesAsync();
                     logger.LogInformation("Departments added successfully.");
@@ -48,11 +48,11 @@ namespace FarSis.Data
                 }
 
                 // Create the Principle and Editor users (only 1 principle and 1 editor)
-                var principleUser = new ApplicationUser
+                var principleUser = new User
                 {
                     UserName = "Barış",
                     Email = "principle@farsis.com",
-                    DepartmentId = "10"
+                    DepartmentId = 10
                 };
 
                 var result = await userManager.CreateAsync(principleUser, "Password123!");
@@ -62,11 +62,11 @@ namespace FarSis.Data
                     logger.LogInformation("Principle user created.");
                 }
 
-                var editorUser = new ApplicationUser
+                var editorUser = new User
                 {
                     UserName = "Okan",
                     Email = "editor@farsis.com",
-                    DepartmentId = "11"
+                    DepartmentId = 11
                 };
 
                 result = await userManager.CreateAsync(editorUser, "Password123!");
@@ -86,11 +86,11 @@ namespace FarSis.Data
 
                 for (int i = 0; i < departments.Count() - 2; i++)
                 {
-                    var user = new ApplicationUser
+                    var user = new User
                     {
                         UserName = leaderNames[i],
                         Email = $"{leaderNames[i].ToLower()}@farsis.com",
-                        DepartmentId = departments[i].Id.ToString()
+                        DepartmentId = departments[i].Id
                     };
 
                     result = await userManager.CreateAsync(user, "Password123!");
