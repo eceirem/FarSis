@@ -27,8 +27,22 @@ app.UseRouting();
 app.UseAuthorization();
 
 // 🔹 Updated routing approach (replaces UseEndpoints)
-app.MapControllerRoute(
+/*app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
+app.MapControllerRoute(
+    name: "areas",
+    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+);*/
+
+app.UseEndpoints(endpoints =>
+{
+        endpoints.MapAreaControllerRoute(
+        name: "Admin",
+        areaName: "Admin",
+        pattern: "Admin/{controller=Dashboard}/{action=Index}/{id?}"
+    );
+    endpoints.MapControllerRoute("default","{controller=Home}/{action=Index}/{id?}");
+});
 app.Run();

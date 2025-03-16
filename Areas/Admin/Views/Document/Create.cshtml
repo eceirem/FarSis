@@ -1,0 +1,57 @@
+@model FarSis.Models.Document
+
+<div class="text-center">
+    <div class="display-6">Create Document</div>
+</div>
+
+<form method="post" asp-action="Create">
+    <div class="text-danger" asp-validation-summary="All"></div>
+
+    <!-- Department Dropdown -->
+    <div class="form-group my-3">
+        <!--
+        <label asp-for="DepartmentId">Department</label>
+        <select asp-for="DepartmentId" class="form-control" asp-items="ViewBag.Departments">
+            <option value="">-- Select Department --</option>
+        </select>
+        <span asp-validation-for="DepartmentId" class="text-danger"></span>
+        -->
+        <label asp-for="DepartmentId" class="control-label">Department</label>
+        <select asp-for="DepartmentId" class="form-control" asp-items="ViewBag.Departments">
+            <option value="">-- Select Department --</option>
+        </select>
+        <span asp-validation-for="DepartmentId" class="text-danger"></span>
+    </div>
+
+    <!-- Document Text -->
+    <div class="form-group my-3">
+        <label for="DocumentText">Document Text</label>
+        <textarea asp-for="DocumentText" id="editor" class="form-control" rows="10">
+            @Html.Raw(Model?.DocumentText ?? "")
+        </textarea>
+    </div>
+
+    <!-- CKEditor Script -->
+    <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/ckeditor.js"></script>
+    <script>
+        ClassicEditor
+            .create(document.querySelector('#editor'))
+            .catch(error => {
+                console.error(error);
+            });
+    </script>
+
+    <!-- Save and Back Buttons -->
+    <div class="form-group my-3">
+        <div class="btn-group">
+            <button class="btn btn-primary" type="submit">
+                <i class="fa fa-save"></i>
+                Save
+            </button>
+            <a asp-area="Admin" asp-controller="Document" asp-action="Index" class="btn btn-outline-primary">
+                <i class="fa fa-list"></i>
+                Back to Documents
+            </a>
+        </div>
+    </div>
+</form>

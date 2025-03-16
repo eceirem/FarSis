@@ -4,12 +4,25 @@
     {
         public int Id { get; set; }
 
-        public DateTime Label = DateTime.Now;
-        public String? DocumentText { get; set; }
-        public User User { get; set; } = new();
-        public Department Department { get; set; } = new();
+        // Use DateTime for Label
+        public DateTime Label { get; private set; }
 
-        public Boolean CheckedByEditor = false;
+        public string? DocumentText { get; set; }
+        public User? User { get; set; }
+
+        // DepartmentId to store the selected department's ID
+        public int? DepartmentId { get; set; }
+
+        // Navigation property for Department
+        public Department? Department { get; set; }
+
+        public bool CheckedByEditor { get; set; } = false;
         public int EditorId { get; set; }
+
+        // Constructor to initialize the Label with the current timestamp
+        public Document()
+        {
+            Label = DateTime.Now; // Set the Label only once when the object is created
+        }
     }
 }
