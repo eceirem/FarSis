@@ -3,9 +3,8 @@
     public class Department
     {
         public int Id { get; set; }
+        public string? Name { get; set; }         
+        public List<Document>? Documents { get; set; }
 
-        // Ensure Name is required (if necessary) and prevent null issues
-        public string Name { get; set; } = string.Empty;        
-        public List<Document> Documents { get; set; } = new();
     }
 }

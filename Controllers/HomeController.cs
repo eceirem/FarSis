@@ -15,8 +15,14 @@ namespace FarSis.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account"); // Account/Login sayfasýna gider
+            }
+
+            return View(); // Giriþ yaptýysa Home/Index görünür
         }
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

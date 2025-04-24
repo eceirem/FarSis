@@ -1,0 +1,33 @@
+﻿@model IEnumerable<FarSis.Models.Document>
+
+@{
+    ViewData["Title"] = "Documents";
+}
+
+<h1>Your Documents</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Label</th>
+            <th>Document Text</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var document in Model)
+        {
+            <tr>
+                <td>@document.Label</td>
+                <td>@document.DocumentText</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@document.Id" class="btn btn-primary">Edit</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div>
+    <a asp-action="Create" class="btn btn-success">Create New Document</a>
+</div>

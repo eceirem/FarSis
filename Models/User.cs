@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Identity;
 namespace FarSis.Models
 {
-    public class User : IdentityUser
+    public class User : IdentityUser<int> // Change IdentityUser to IdentityUser<int> to match the Id type
     {
         public int Id { get; set; }
         public String? Name { get; set; }
@@ -14,3 +14,4 @@ namespace FarSis.Models
         public List<Document>? Documents { get; set; } 
     }
 }
+

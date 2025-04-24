@@ -50,7 +50,7 @@ namespace FarSis.Data
                 // Create the Principle and Editor users (only 1 principle and 1 editor)
                 var principleUser = new User
                 {
-                    UserName = "Barış",
+                    Name = "Barış",
                     Email = "principle@farsis.com",
                     DepartmentId = 10
                 };
@@ -64,7 +64,7 @@ namespace FarSis.Data
 
                 var editorUser = new User
                 {
-                    UserName = "Okan",
+                    Name = "Okan",
                     Email = "editor@farsis.com",
                     DepartmentId = 11
                 };
@@ -88,7 +88,7 @@ namespace FarSis.Data
                 {
                     var user = new User
                     {
-                        UserName = leaderNames[i],
+                        Name = leaderNames[i],
                         Email = $"{leaderNames[i].ToLower()}@farsis.com",
                         DepartmentId = departments[i].Id
                     };

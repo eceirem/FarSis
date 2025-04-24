@@ -11,7 +11,7 @@ builder.Services.AddDbContext<FarSisContext>(options =>
     ?? throw new InvalidOperationException("Connection string 'FarSisContext' not found.")));
 
 // Add Identity services
-builder.Services.AddIdentity<User, IdentityRole>()
+builder.Services.AddIdentity<User, IdentityRole<int>>()
     .AddEntityFrameworkStores<FarSisContext>()
     .AddDefaultTokenProviders();
 
